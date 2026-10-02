@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AGI — что это? Примеры, близкие к общему искусственному интеллекту</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0b0d15;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: #eef2ff;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1120px;
+            width: 100%;
+        }
+
+        /* ——— ЗАГОЛОВОК ——— */
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem 1rem 1rem;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 180px;
+            background: radial-gradient(circle at 50% 20%, rgba(99, 102, 241, 0.25), transparent 70%);
+            filter: blur(50px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 1.2rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.15;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            color: #94a3b8;
+            max-width: 720px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ——— ОСНОВНЫЕ СЕКЦИИ ——— */
+        .section {
+            margin-bottom: 3.5rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .section-title .badge {
+            background: #1e1b4b;
+            color: #a5b4fc;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border: 1px solid #312e81;
+        }
+
+        .definition-card {
+            background: linear-gradient(145deg, #131a2c, #0d1222);
+            border-radius: 32px;
+            padding: 2.5rem;
+            border: 1px solid #1e293b;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(99, 102, 241, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .definition-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(79, 70, 229, 0.15), transparent 70%);
+            pointer-events: none;
+        }
+
+        .definition-card p {
+            font-size: 1.15rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .definition-card strong {
+            color: #e0e7ff;
+            font-weight: 600;
+        }
+
+        .highlight {
+            color: #a5b4fc;
+            font-weight: 600;
+            border-bottom: 2px dashed rgba(165, 180, 252, 0.3);
+            cursor: default;
+        }
+
+        .criteria-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .criterion {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid #1e293b;
+            border-radius: 20px;
+            padding: 1.5rem 1.25rem;
+            transition: all 0.2s ease;
+        }
+
+        .criterion:hover {
+            border-color: #4f46e5;
+            background: rgba(30, 27, 75, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .criterion .icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.6rem;
+            display: block;
+        }
+
+        .criterion h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 0.4rem;
+        }
+
+        .criterion p {
+            font-size: 0.85rem;
+            color: #94a3b8;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* ——— КАРТОЧКИ МОДЕЛЕЙ ——— */
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .model-card {
+            background: linear-gradient(145deg, #131a2c, #0b0f1c);
+            border-radius: 28px;
+            border: 1px solid #1e293b;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .model-card:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .model-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899);
+        }
+
+        .model-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #fff, #c7d2fe);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .model-vendor {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .model-vendor .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            display: inline-block;
+            box-shadow: 0 0 8px #22c55e;
+        }
+
+        .model-desc {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        .model-stats {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .model-stats li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.88rem;
+            color: #cbd5e1;
+        }
+
+        .model-stats .stat-key {
+            color: #64748b;
+            min-width: 100px;
+            font-weight: 500;
+        }
+
+        .model-stats .stat-value {
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .model-stats .stat-value strong {
+            color: #a5b4fc;
+            font-weight: 700;
+        }
+
+        .agi-tag {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 999px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            align-self: flex-start;
+            margin-top: 0.5rem;
+        }
+
+        /* ——— СРАВНЕНИЕ ——— */
+        .comparison-section {
+            margin-top: 2rem;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #0d1222;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid #1e293b;
+            font-size: 0.9rem;
+        }
+
+        .comparison-table th {
+            background: #1a1f35;
+            color: #94a3b8;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1.2rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #1a1f35;
+            color: #cbd5e1;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover td {
+            background: rgba(30, 27, 75, 0.2);
+        }
+
+        .highlight-cell {
+            color: #a5b4fc;
+            font-weight: 600;
+        }
+
+        /* ——— ПОДВАЛ ——— */
+        .footer-note {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            color: #475569;
+            font-size: 0.85rem;
+            border-top: 1px solid #1e293b;
+        }
+
+        .footer-note a {
+            color: #818cf8;
+            text-decoration: none;
+        }
+
+        /* ——— АДАПТИВ ——— */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0.75rem;
+            }
+
+            .definition-card {
+                padding: 1.5rem;
+            }
+
+            .model-card {
+                padding: 1.5rem;
+            }
+
+            .comparison-table {
+                font-size: 0.78rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .model-stats .stat-key {
+                min-width: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- HERO -->
+        <header class="hero">
+            <h1>Что такое AGI?<br>И почему мы уже близко</h1>
+            <p class="subtitle">
+                Общий искусственный интеллект перестал быть чистой теорией. В 2026 году три модели —
+                Gemini 4 Argon, GPT-6 Astra и Claude Opus 5.5 — демонстрируют способности,
+                которые ещё вчера считались прерогативой человека.
+            </p>
+        </header>
+
+        <!-- ОПРЕДЕЛЕНИЕ -->
+        <section class="section">
+            <h2 class="section-title">
+                Определение AGI
+                <span class="badge">Фундамент</span>
+            </h2>
+
+            <div class="definition-card">
+                <p>
+                    <strong>AGI (Artificial General Intelligence)</strong> — это гипотетический искусственный интеллект,
+                    который обладает способностью понимать, учиться и применять знания в <span class="highlight">широком спектре задач</span>
+                    на уровне, сопоставимом с человеческим. В отличие от «узкого» ИИ (например, систем распознавания лиц или
+                    рекомендательных алгоритмов), AGI не запрограммирован на одну конкретную задачу.
+                </p>
+                <p>
+                    Классическое определение звучало так: «система, способная выполнить любую интеллектуальную задачу,
+                    доступную человеку» <citation>[17]</citation>. Однако современные исследователи всё чаще описывают AGI
+                    не как <em>точку</em>, а как <span class="highlight">процесс постепенного накопления возможностей</span> <citation>[1]</citation>.
+                    DeepMind, OpenAI и другие лаборатории в 2024–2026 годах перешли к многоуровневым шкалам, где AGI —
+                    это не «включение», а движение по ступеням автономии и широты компетенций.
+                </p>
+
+                <div class="criteria-grid">
+                    <div class="criterion">
+                        <span class="icon">🧠</span>
+                        <h4>Универсальность</h4>
+                        <p>Способность решать задачи из совершенно разных доменов без переобучения.</p>
+                    </div>
+                    <div class="criterion">
+                        <span class="icon">🔄</span>
+                        <h4>Адаптивность</h4>
+                        <p>Постоянное обучение и перенос знаний между областями в реальном времени.</p>
+                    </div>
+                    <div class="criterion">
+                        <span class="icon">🎯</span>
+                        <h4>Целеполагание</h4>
+                        <p>Самостоятельное планирование и принятие решений в неопределённой среде.</p>
+                    </div>
+                    <div class="criterion">
+                        <span class="icon">🪞</span>
+                        <h4>Метапознание</h4>
+                        <p>Рефлексия над собственными процессами мышления и их улучшение.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- МОДЕЛИ, БЛИЗКИЕ К AGI -->
+        <section class="section">
+            <h2 class="section-title">
+                Модели, близкие к AGI
+                <span class="badge">2026</span>
+            </h2>
+
+            <div class="models-grid">
+
+                <!-- GEMINI 4 ARGON -->
+                <article class="model-card">
+                    <div class="model-name">Gemini 4 Argon</div>
+                    <div class="model-vendor">
+                        <span class="dot"></span> Google DeepMind · Октябрь 2026
+                    </div>
+                    <p class="model-desc">
+                        Флагманская модель Google, созданная для «глубокого рассуждения в сложных и длительных рабочих процессах».
+                        Уже используется внутри компании для миграции кодовых баз, оптимизации дата-центров и киберзащиты.
+                    </p>
+                    <ul class="model-stats">
+                        <li>
+                            <span class="stat-key">DeepSWE v1.1</span>
+                            <span class="stat-value"><strong>77,9%</strong> — рекорд в реальных задачах разработки</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Код</span>
+                            <span class="stat-value">Миграция C/C++ → Rust для Fuchsia OS (800 000+ строк)</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Оптимизация</span>
+                            <span class="stat-value">Ускорение libgav1 в <strong>2,7 раза</strong></span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Контекст</span>
+                            <span class="stat-value">До <strong>1 млн токенов</strong> на выходе</span>
+                        </li>
+                    </ul>
+                    <span class="agi-tag">Близка к AGI: автономная инженерия</span>
+                </article>
+
+                <!-- GPT-6 ASTRA -->
+                <article class="model-card">
+                    <div class="model-name">GPT-6 Astra</div>
+                    <div class="model-vendor">
+                        <span class="dot"></span> OpenAI · Сентябрь 2026
+                    </div>
+                    <p class="model-desc">
+                        «Самый умный и наиболее согласованный с человеком» релиз OpenAI. Astra не просто отвечает —
+                        она управляет компьютером, браузером, файлами и приложениями как полноценный цифровой сотрудник.
+                    </p>
+                    <ul class="model-stats">
+                        <li>
+                            <span class="stat-key">ARC-AGI 3</span>
+                            <span class="stat-value"><strong>99,9%</strong> — потолок измерения</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">FrontierMath</span>
+                            <span class="stat-value"><strong>98%</strong> на уровне Tier 4</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">OSWorld 2.0</span>
+                            <span class="stat-value">72,6% за <strong>40 минут</strong> (на 47% быстрее предыдущей)</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Выравнивание</span>
+                            <span class="stat-value"><strong>0%</strong> выходов за рамки запроса</span>
+                        </li>
+                    </ul>
+                    <span class="agi-tag">Близка к AGI: универсальный компьютерный агент</span>
+                </article>
+
+                <!-- CLAUDE OPUS 5.5 -->
+                <article class="model-card">
+                    <div class="model-name">Claude Opus 5.5</div>
+                    <div class="model-vendor">
+                        <span class="dot"></span> Anthropic · Сентябрь 2026
+                    </div>
+                    <p class="model-desc">
+                        Модель для «длительной агентной разработки и интеллектуальной работы». Отличается исключительной
+                        надёжностью в аналитике, финансах и написании текстов — там, где ошибка стоит дорого.
+                    </p>
+                    <ul class="model-stats">
+                        <li>
+                            <span class="stat-key">GDPval-AA v2.1</span>
+                            <span class="stat-value"><strong>1846 Elo</strong> — лидер среди моделей</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Анализ</span>
+                            <span class="stat-value">16 из 18 отчётов прошли проверку без единой выдумки</span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Эффективность</span>
+                            <span class="stat-value">Превосходит GPT-6 Astra при <strong>1/5 стоимости</strong></span>
+                        </li>
+                        <li>
+                            <span class="stat-key">Скорость</span>
+                            <span class="stat-value">M&A-анализ за <strong>63 мин</strong> вместо 93</span>
+                        </li>
+                    </ul>
+                    <span class="agi-tag">Близка к AGI: профессиональное суждение</span>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- СРАВНЕНИЕ -->
+        <section class="section comparison-section">
+            <h2 class="section-title">
+                Сравнение по ключевым осям AGI
+            </h2>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Критерий</th>
+                        <th>Gemini 4 Argon</th>
+                        <th>GPT-6 Astra</th>
+                        <th>Claude Opus 5.5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Универсальность</strong></td>
+                        <td>Код, кибербезопасность, длинные документы</td>
+                        <td class="highlight-cell">Компьютер, браузер, файлы, формы</td>
+                        <td>Аналитика, финансы, юридические тексты</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Автономность</strong></td>
+                        <td>Многочасовые агентные сессии</td>
+                        <td class="highlight-cell">Полный контроль над ОС и приложениями</td>
+                        <td>Агентная разработка и аудит</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Метапознание</strong></td>
+                        <td>Оптимизация собственных алгоритмов</td>
+                        <td>Обнаружение ошибок в инструкциях</td>
+                        <td class="highlight-cell">Самокоррекция в оценках</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Выравнивание</strong></td>
+                        <td>Поэтапный выпуск, Fairwind</td>
+                        <td class="highlight-cell">0% нарушений границ запроса</td>
+                        <td>Акцент на «pacing» и безопасность</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Стоимость (вход/выход)</strong></td>
+                        <td>$2 / $10 за 1M токенов</td>
+                        <td>$10 / $50 за 1M токенов</td>
+                        <td class="highlight-cell">$4 / $20 за 1M токенов</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- ЗАКЛЮЧЕНИЕ -->
+        <section class="section">
+            <div class="definition-card" style="background: linear-gradient(145deg, #141a30, #0b0f1c);">
+                <p style="font-size: 1.1rem; color: #cbd5e1;">
+                    <strong>Вывод:</strong> Ни одна из трёх моделей не является AGI в строгом смысле —
+                    они всё ещё ограничены контекстом, обучающими данными и отсутствием истинного embodiment.
+                    Однако каждая из них <span class="highlight">приближается к AGI с разных сторон</span>:
+                    Argon — через глубокую инженерию и киберзащиту, Astra — через универсальное управление
+                    цифровой средой, Opus 5.5 — через безупречное профессиональное суждение. Вместе они
+                    очерчивают контуры того, чем станет общий искусственный интеллект в ближайшие годы.
+                </p>
+            </div>
+        </section>
+
+        <!-- ПОДВАЛ -->
+        <footer class="footer-note">
+            <p>Обзор подготовлен на основе публичных релизов Google DeepMind, OpenAI и Anthropic (сентябрь–октябрь 2026).</p>
+            <p style="margin-top: 0.5rem; opacity: 0.6;">AGI — это не вопрос «если», а вопрос «когда» и «как безопасно».</p>
+        </footer>
+
+    </div>
+</body>
+</html>
